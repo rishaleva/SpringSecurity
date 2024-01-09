@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -29,7 +30,6 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    //ALL
     @GetMapping(value = "/")
     public String getAllUsers(ModelMap model, Principal principal) {
         User user = userService.findByUserName(principal.getName());
@@ -39,29 +39,18 @@ public class AdminController {
         return "users";
     }
 
-    // CREATE
     @GetMapping("/new")
-    public String CreateUserForm(ModelMap model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        Collection<Role> roles = roleService.getRoles();
-        model.addAttribute("role", roles);
+    public String CreateUserForm(@ModelAttribute("user") @Valid User user, ModelMap model) {
+        model.addAttribute("roles", roleService.getRoles());
         return "userCreate";
     }
 
     @PostMapping("/")
     public String addUser(@ModelAttribute("user") @Valid User user, ModelMap model) {
-        model.addAttribute("roles", roleService.getRoles());
         userService.addUser(user);
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        userService.updateUser(user);
-
         return "redirect:/admin/";
     }
 
-    // UPDATE
     @GetMapping("/{id}/update")
     public String getEditUserForm(ModelMap model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.getUser(id));
@@ -74,7 +63,6 @@ public class AdminController {
         return "redirect:/admin/";
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.removeUser(id);

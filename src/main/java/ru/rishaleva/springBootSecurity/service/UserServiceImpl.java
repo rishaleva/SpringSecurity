@@ -5,9 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.rishaleva.springBootSecurity.Dao.RoleDao;
 import ru.rishaleva.springBootSecurity.Dao.UserDao;
+import ru.rishaleva.springBootSecurity.model.Role;
 import ru.rishaleva.springBootSecurity.model.User;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -51,6 +53,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        userDao.updateUser(user);
+        if (user.getPassword().isEmpty()) {
+            user.setPassword(getUser(user.getId()).getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
     }
 }
