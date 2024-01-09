@@ -1,11 +1,8 @@
 package ru.rishaleva.springBootSecurity.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.rishaleva.springBootSecurity.model.Role;
 import ru.rishaleva.springBootSecurity.model.User;
@@ -14,7 +11,6 @@ import ru.rishaleva.springBootSecurity.service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -61,7 +57,8 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}")
-    public String saveUpdateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id, @RequestParam("roles") List<String> roles) {
+    public String saveUpdateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id,
+                                 @RequestParam("roles") List<String> roles) {
         Set<Role> selectedRoles = roles.stream()
                 .map(roleService::findByName)
                 .collect(Collectors.toSet());

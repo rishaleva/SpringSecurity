@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.rishaleva.springBootSecurity.Dao.RoleDao;
 import ru.rishaleva.springBootSecurity.model.Role;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
