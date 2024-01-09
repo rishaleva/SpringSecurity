@@ -29,9 +29,9 @@
         <br>
 
         <label>Role:
-            <select size="2" multiple name="roles" >
-                <option value="ROLE_ADMIN">ADMIN</option>
-                <option selected="selected" value="ROLE_USER">USER</option>
+            <select size="2" multiple name="roles" th:field="*{roles}">
+                <option value="ROLE_ADMIN" th:selected="${user.roles.contains('ROLE_ADMIN')}">ADMIN</option>
+                <option value="ROLE_USER" th:selected="${user.roles.contains('ROLE_USER')}">USER</option>
             </select>
         </label>
         <br>

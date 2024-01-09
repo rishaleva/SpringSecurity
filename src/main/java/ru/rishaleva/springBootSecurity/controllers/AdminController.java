@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -60,14 +61,18 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}")
-    public String saveUpdateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+    public String saveUpdateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id, @RequestParam("roles") List<String> roles) {
+        Set<Role> selectedRoles = roles.stream()
+                .map(roleService::findByName)
+                .collect(Collectors.toSet());
+        user.setRoles(selectedRoles);
         userService.updateUser(user);
         return "redirect:/admin/";
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.removeUser(id);
-        return "redirect:/admin/";
+        @DeleteMapping("/{id}")
+        public String deleteUser (@PathVariable("id") Long id){
+            userService.removeUser(id);
+            return "redirect:/admin/";
+        }
     }
-}
