@@ -26,12 +26,11 @@
     <input type = "text" th:field = "*{password}" id = "password"/>
     <br>
     <br>
-    <select name="nameRoles" multiple size="2">
-    <option th:each="role : ${roles}"
-            th:value="${role.getId()}"
-            th:text="${role.getName()}">
-    </option>
-    </select>
+    <label>Role:
+        <select name="role">
+            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+        </select>
+    </label>
     <br>
     <br>
     <input type = "submit" value = "Save"/>

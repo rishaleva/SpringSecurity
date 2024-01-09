@@ -11,5 +11,6 @@ public interface RoleDao {
     Set<Role> getRoles();
 
     Role findById(Long id);
+    Role findByName(String name);
 
 }

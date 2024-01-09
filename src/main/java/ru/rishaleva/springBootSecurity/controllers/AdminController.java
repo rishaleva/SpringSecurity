@@ -15,6 +15,7 @@ import ru.rishaleva.springBootSecurity.service.UserService;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -46,11 +47,12 @@ public class AdminController {
     }
 
     @PostMapping("/")
-    public String addUser(@ModelAttribute("user") @Valid User user, ModelMap model) {
+    public String addUser(@ModelAttribute("user") @Valid User user, @RequestParam("role") Long roleId) {
+        Role role = roleService.findById(roleId);
+        user.setRoles(Collections.singleton(role));
         userService.addUser(user);
         return "redirect:/admin/";
     }
-
     @GetMapping("/{id}/update")
     public String getEditUserForm(ModelMap model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.getUser(id));
